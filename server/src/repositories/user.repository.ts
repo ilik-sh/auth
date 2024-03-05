@@ -34,8 +34,13 @@ export class UserRepository {
   async createNewUser(
     user: Pick<User, 'firstName' | 'lastName' | 'email' | 'password'>,
   ) {
-    this.prisma.user.create({
-      data: user,
+    return this.prisma.user.create({
+      data: {
+        email: user.email,
+        password: user.password,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
     });
   }
 }
