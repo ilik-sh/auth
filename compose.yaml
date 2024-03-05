@@ -1,0 +1,30 @@
+services:
+  api:
+    depends_on:
+      - postgres
+    build: ./server
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    networks:
+      - default
+  client:
+    depends_on:
+      - api
+    build: ./client
+    ports:
+      - "3000:3000"
+    networks:
+      - default
+  postgres:
+    env_file:
+      - db.env
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+
+networks:
+  default:
