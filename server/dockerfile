@@ -13,10 +13,8 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN npx prisma migrate dev
-
 # Creates a "dist" folder with the production build
-# RUN npm run build
+RUN npm run build
 
 # Start the server using the production build
 CMD [ "npm", "start" ]
