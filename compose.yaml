@@ -1,0 +1,14 @@
+services:
+  server:
+    build:
+      context: ./server/.
+    ports:
+      - 3001:3001
+  postgres:
+    env_file:
+      - db.env
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
