@@ -1,9 +1,13 @@
 services:
-  server:
-    build:
-      context: ./server/.
+  api:
+    depends_on:
+      - postgres
+    build: ./server
     ports:
-      - 3001:3001
+      - "${API_PORT}:${API_PORT}"
+    networks:
+      - default
+
   postgres:
     env_file:
       - db.env
@@ -12,3 +16,8 @@ services:
     restart: always
     ports:
       - "5432:5432"
+    networks:
+      - default
+
+networks:
+  default:
