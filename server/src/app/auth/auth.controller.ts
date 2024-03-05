@@ -35,7 +35,11 @@ export class AuthController {
     }
 
     const tokens = this.authService.generateTokens(newUser);
-    return tokens;
+    return {
+      ...tokens,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+    };
   }
 
   @Post('signin')
@@ -45,8 +49,20 @@ export class AuthController {
       throw new InternalServerErrorException(ErrorMessage.UserDoesNotExist);
     }
 
+    const passwordsMatch = await this.authService.comparePasswords(
+      existingUser,
+      body.password,
+    );
+    if (!passwordsMatch) {
+      throw new InternalServerErrorException(ErrorMessage.UserDoesNotExist);
+    }
+
     const tokens = this.authService.generateTokens(existingUser);
-    return tokens;
+    return {
+      ...tokens,
+      firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
+    };
   }
 
   @Get('refresh')
@@ -57,8 +73,14 @@ export class AuthController {
       throw new InternalServerErrorException(ErrorMessage.UserDoesNotExist);
     }
 
+    existingUser.lastName;
+
     const tokens = this.authService.generateTokens(existingUser);
-    return tokens;
+    return {
+      ...tokens,
+      firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
+    };
   }
 
   @Get('me')
